@@ -1,12 +1,33 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import * as Notifications from 'expo-notifications';
+import React from 'react';
+import { Button, StyleSheet } from 'react-native';
 
 export default function HomeScreen() {
+ 
+  React.useEffect(() => {
+    Notifications.requestPermissionsAsync();
+  }, []);
+
+
+  const triggerNotification = async (title: string, body: string) => {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "WebView Loaded 🎉",
+    body: "The page finished loading.",
+      },
+      trigger: {
+        type: 'timeInterval',
+        seconds: 5,
+      } as Notifications.TimeIntervalTriggerInput,
+    });
+  }; 
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -17,39 +38,23 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <Ionicons name="home" size={40} color="purple" />
+        <ThemedText type="title">Hello kshitijaaa! 👋</ThemedText>
         <HelloWave />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+      <ThemedView style={styles.buttonContainer}>
+        <Button
+          title="Send WebView Notification"
+          onPress={() =>
+            triggerNotification('WebView', 'Button clicked in WebView 🚀')
+          }
+        />
+        <Button
+          title="Send Video Notification"
+          onPress={() =>
+            triggerNotification('Video Player', 'Tap to open Video Player 🎬')
+          }
+        />
       </ThemedView>
     </ParallaxScrollView>
   );
@@ -64,6 +69,10 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  buttonContainer: {
+    marginVertical: 20,
+    gap: 12,
   },
   reactLogo: {
     height: 178,
