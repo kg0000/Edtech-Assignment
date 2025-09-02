@@ -20,10 +20,10 @@ export default function WebViewScreen() {
     <View style={styles.container}>
       <WebView
         ref={webviewRef}
-        source={{ uri: 'https://github.com/' }}
+        source={{ uri: 'https://houseofedtech.in/' }}
         style={styles.webview}
         onLoadEnd={() =>
-          scheduleNotification("WebView Loaded 🚀", "The page finished loading.")
+          scheduleNotification("WebView Loaded ", "The page finished loading.")
         }
       />
       <View style={styles.buttons}>
